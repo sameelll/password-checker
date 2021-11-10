@@ -28,7 +28,7 @@ def pwned_api_check(password):
     first5_char, tail = sha1password[:5], sha1password[5:]
     response = request_api_data(first5_char)
     return get_password_leaks_count(response, tail)
-
+# The main function which enables the access the program within the terminal
 def main(args):
     for password in args:
         count = pwned_api_check(password)
@@ -38,4 +38,7 @@ def main(args):
             print(f'{password} was NOT found. Carry on!') 
     return 'done!'
 
-main(sys.argv[1:])
+# The fuction runs only if it's the main file
+if __name__ == '__main__':
+    # 'sys.exit' has been used to bring the command line back 
+    sys.exit(main(sys.argv[1:]))
