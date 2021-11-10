@@ -2,6 +2,7 @@
 import requests
 import hashlib
 import sys
+
 # API request
 def request_api_data(query_char):
     # SHA1 Hash method with the first 5 digit of a password 
@@ -12,6 +13,7 @@ def request_api_data(query_char):
     if res.status_code != 200:
         raise RuntimeError(f'Error fetching: {res.status_code}, check the api and try again')
     return res 
+
 # How many times the password hacked:
 def get_password_leaks_count(hashes, hash_to_check): 
     hashes = (line.split(':') for line in hashes.text.splitlines())
@@ -28,12 +30,13 @@ def pwned_api_check(password):
     first5_char, tail = sha1password[:5], sha1password[5:]
     response = request_api_data(first5_char)
     return get_password_leaks_count(response, tail)
+    
 # The main function which enables the access the program within the terminal
 def main(args):
     for password in args:
         count = pwned_api_check(password)
         if count:
-            print(f'{password} was found {count} times. \nYou should probably change your password!')
+            print(f'\nThe password "{password}" was found {count} times. \nYou should probably change your password!')
         else:
             print(f'{password} was NOT found. Carry on!') 
     return 'done!'
